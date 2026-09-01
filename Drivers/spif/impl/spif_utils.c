@@ -18,29 +18,57 @@
 
 bool spif_utils_is_ready(const spif_handle_t *handle)
 {
-    (void)handle;
-    return false; /* TODO */
+    if(handle == NULL || handle->inited != true)
+    {
+      return false;
+    }
+    return true;
 }
 
 bool spif_utils_check_range(const spif_handle_t *handle, uint32_t address, uint32_t size)
 {
-    (void)handle;
-    (void)address;
-    (void)size;
-    return false; /* TODO */
+	if(!spif_utils_is_ready(handle))
+	{
+	  return false;
+	}
+	if(address >= handle->total_size )
+	{
+	  return false;
+	}
+	if(size > handle->total_size - address)
+	{
+	  return false;
+	}
+    return true;
 }
 
 bool spif_utils_clamp_region(uint32_t region_size, uint32_t offset, uint32_t *size)
 {
-    (void)region_size;
-    (void)offset;
-    (void)size;
-    return false; /* TODO */
+	if(size == NULL)
+	{
+	  return false;
+	}
+	if(offset >= region_size)
+	{
+	  return false;
+	}
+	if(*size > region_size - offset)
+	{
+	  *size = region_size - offset;
+	}
+	return true;
 }
 
 bool spif_utils_capacity_to_block_count(uint8_t capacity, uint32_t *block_count)
 {
-    (void)capacity;
-    (void)block_count;
-    return false; /* TODO */
+	if(block_count == NULL)
+	{
+	  return false;
+	}
+	if((1U << capacity) < SPIF_BLOCK_SIZE)
+	{
+	  return false;
+	}
+    *block_count = (1U << capacity)/SPIF_BLOCK_SIZE;
+    return true;
 }
