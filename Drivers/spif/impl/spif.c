@@ -80,7 +80,7 @@ bool spif_erase_chip(spif_handle_t *handle)
     {
       return false;
     }
-    else if(!spif_commander_wait_for_writing(handle, SPIF_TIMEOUT_CHIP_ERASE))
+    else if(!spif_commander_wait_for_writing(handle, SPIF_TIMEOUT_BLOCK_ERASE))
     {
       return false;
     }
@@ -201,7 +201,7 @@ bool spif_write_page(spif_handle_t *handle, uint32_t page, const uint8_t *data, 
 	}
 
 	bool ret_val;
-	ret_val = spif_commander_command_address(handle, SPIF_CMD_PAGE_PROGRAM_3ADDR, SPIF_CMD_PAGE_PROGRAM_4ADDR, address);
+	ret_val = spif_commander_command_address(handle, SPIF_CMD_PAGE_PROG_3ADDR, SPIF_CMD_PAGE_PROG_4ADDR, address);
 
 	if(ret_val)
 	{
@@ -213,7 +213,7 @@ bool spif_write_page(spif_handle_t *handle, uint32_t page, const uint8_t *data, 
 	  return false;
 	}
 
-	if(!spif_commander_wait_for_writing(handle, SPIF_TIMEOUT_PAGE_PROGRAM))
+	if(!spif_commander_wait_for_writing(handle, SPIF_TIMEOUT_PAGE_PROG))
 	{
 	  return false;
 	}
