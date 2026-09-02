@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "spi.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -91,6 +92,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_SPI2_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   /* printf() goes out over USART2 -> ST-Link Virtual COM Port, see _write() below */
   setvbuf(stdout, NULL, _IONBF, 0);
@@ -99,23 +101,28 @@ int main(void)
   /* TODO Step 1: enable SPI2 and the chip select pin in CubeMX (see Docs/), regenerate,
    *              then uncomment the two blocks below. MX_SPI2_Init() is generated above.
    *
-   * if (spif_test_run(&hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
-   * {
-   *   HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-   * }
-   *
-   * if (!spif_init(&spif, &hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
-   * {
-   *   printf("spif_init() failed\r\n");
-   *   Error_Handler();
-   * }
    */
+/*  if (spif_test_run(&hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
+  {
+    HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+  }
+
+  if (!spif_init(&spif, &hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
+  {
+    printf("spif_init() failed\r\n");
+    Error_Handler();
+  }
+*/
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  /*
+    HAL_GPIO_TogglePin(test_led_GPIO_Port, test_led_Pin);
+	HAL_Delay(500);
+*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

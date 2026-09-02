@@ -1,0 +1,801 @@
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 1
+
+
+   1              		.cpu cortex-m0plus
+   2              		.arch armv6s-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.file	"spif_commander.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Drivers/spif/impl/spif_commander.c"
+  18              		.section	.text.spif_commander_cs,"ax",%progbits
+  19              		.align	1
+  20              		.global	spif_commander_cs
+  21              		.syntax unified
+  22              		.code	16
+  23              		.thumb_func
+  25              	spif_commander_cs:
+  26              	.LVL0:
+  27              	.LFB363:
+   1:Drivers/spif/impl/spif_commander.c **** /**
+   2:Drivers/spif/impl/spif_commander.c ****  * @file spif_commander.c
+   3:Drivers/spif/impl/spif_commander.c ****  * @author ORQA Embedded Academy
+   4:Drivers/spif/impl/spif_commander.c ****  * @brief Look at spif_commander.h
+   5:Drivers/spif/impl/spif_commander.c ****  *
+   6:Drivers/spif/impl/spif_commander.c ****  * @note Every function is a stub. This is the layer that actually touches the bus,
+   7:Drivers/spif/impl/spif_commander.c ****  *       so this is where the logic analyzer earns its keep.
+   8:Drivers/spif/impl/spif_commander.c ****  */
+   9:Drivers/spif/impl/spif_commander.c **** 
+  10:Drivers/spif/impl/spif_commander.c **** /*------------------------------------------------------ INCLUDES ---------------------------------
+  11:Drivers/spif/impl/spif_commander.c **** #include "spif_commander.h"
+  12:Drivers/spif/impl/spif_commander.c **** 
+  13:Drivers/spif/impl/spif_commander.c **** /*----------------------------------------------- PRIVATE MACROS / DEFINES ------------------------
+  14:Drivers/spif/impl/spif_commander.c **** 
+  15:Drivers/spif/impl/spif_commander.c **** /*--------------------------------------------- PRIVATE VARIABLES (STATIC) ------------------------
+  16:Drivers/spif/impl/spif_commander.c **** 
+  17:Drivers/spif/impl/spif_commander.c **** /*------------------------------------------- PUBLIC FUNCTION IMPLEMENTATIONS ---------------------
+  18:Drivers/spif/impl/spif_commander.c **** 
+  19:Drivers/spif/impl/spif_commander.c **** void spif_commander_cs(spif_handle_t *handle, bool select)
+  20:Drivers/spif/impl/spif_commander.c **** {
+  28              		.loc 1 20 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  21:Drivers/spif/impl/spif_commander.c ****     if(select == true)
+  33              		.loc 1 21 5 view .LVU1
+  34              		.loc 1 21 7 is_stmt 0 view .LVU2
+  35 0000 0029     		cmp	r1, #0
+  36 0002 04D0     		beq	.L2
+  22:Drivers/spif/impl/spif_commander.c ****     {
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 2
+
+
+  23:Drivers/spif/impl/spif_commander.c ****       handle->gpio->BSRR = (uint32_t)(handle->pin) << 16;
+  37              		.loc 1 23 7 is_stmt 1 view .LVU3
+  38              		.loc 1 23 45 is_stmt 0 view .LVU4
+  39 0004 0389     		ldrh	r3, [r0, #8]
+  40              		.loc 1 23 13 view .LVU5
+  41 0006 4268     		ldr	r2, [r0, #4]
+  42              		.loc 1 23 52 view .LVU6
+  43 0008 1B04     		lsls	r3, r3, #16
+  44              		.loc 1 23 26 view .LVU7
+  45 000a 9361     		str	r3, [r2, #24]
+  46              	.L1:
+  24:Drivers/spif/impl/spif_commander.c ****     }
+  25:Drivers/spif/impl/spif_commander.c ****     else
+  26:Drivers/spif/impl/spif_commander.c ****     {
+  27:Drivers/spif/impl/spif_commander.c ****       handle->gpio->BSRR = (uint32_t)(handle->pin);
+  28:Drivers/spif/impl/spif_commander.c ****     }
+  29:Drivers/spif/impl/spif_commander.c **** }
+  47              		.loc 1 29 1 view .LVU8
+  48              		@ sp needed
+  49 000c 7047     		bx	lr
+  50              	.L2:
+  27:Drivers/spif/impl/spif_commander.c ****     }
+  51              		.loc 1 27 7 is_stmt 1 view .LVU9
+  27:Drivers/spif/impl/spif_commander.c ****     }
+  52              		.loc 1 27 45 is_stmt 0 view .LVU10
+  53 000e 0289     		ldrh	r2, [r0, #8]
+  27:Drivers/spif/impl/spif_commander.c ****     }
+  54              		.loc 1 27 13 view .LVU11
+  55 0010 4368     		ldr	r3, [r0, #4]
+  27:Drivers/spif/impl/spif_commander.c ****     }
+  56              		.loc 1 27 26 view .LVU12
+  57 0012 9A61     		str	r2, [r3, #24]
+  58              		.loc 1 29 1 view .LVU13
+  59 0014 FAE7     		b	.L1
+  60              		.cfi_endproc
+  61              	.LFE363:
+  63              		.section	.text.spif_commander_transmit,"ax",%progbits
+  64              		.align	1
+  65              		.global	spif_commander_transmit
+  66              		.syntax unified
+  67              		.code	16
+  68              		.thumb_func
+  70              	spif_commander_transmit:
+  71              	.LVL1:
+  72              	.LFB364:
+  30:Drivers/spif/impl/spif_commander.c **** 
+  31:Drivers/spif/impl/spif_commander.c **** bool spif_commander_transmit(spif_handle_t *handle, const uint8_t *tx, uint32_t size, uint32_t time
+  32:Drivers/spif/impl/spif_commander.c **** {
+  73              		.loc 1 32 1 is_stmt 1 view -0
+  74              		.cfi_startproc
+  75              		@ args = 0, pretend = 0, frame = 0
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+  77              		.loc 1 32 1 is_stmt 0 view .LVU15
+  78 0000 10B5     		push	{r4, lr}
+  79              	.LCFI0:
+  80              		.cfi_def_cfa_offset 8
+  81              		.cfi_offset 4, -8
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 3
+
+
+  82              		.cfi_offset 14, -4
+  33:Drivers/spif/impl/spif_commander.c **** 	if(handle == NULL || tx == NULL)
+  83              		.loc 1 33 2 is_stmt 1 view .LVU16
+  84              		.loc 1 33 4 is_stmt 0 view .LVU17
+  85 0002 0028     		cmp	r0, #0
+  86 0004 09D0     		beq	.L6
+  87              		.loc 1 33 20 discriminator 1 view .LVU18
+  88 0006 0029     		cmp	r1, #0
+  89 0008 09D0     		beq	.L7
+  34:Drivers/spif/impl/spif_commander.c **** 	{
+  35:Drivers/spif/impl/spif_commander.c **** 	  return false;
+  36:Drivers/spif/impl/spif_commander.c **** 	}
+  37:Drivers/spif/impl/spif_commander.c ****     HAL_StatusTypeDef status = HAL_SPI_Transmit(handle->hspi, (uint8_t *)tx, (uint16_t)size, timeou
+  90              		.loc 1 37 5 is_stmt 1 view .LVU19
+  91              		.loc 1 37 32 is_stmt 0 view .LVU20
+  92 000a 92B2     		uxth	r2, r2
+  93              	.LVL2:
+  94              		.loc 1 37 32 view .LVU21
+  95 000c 0068     		ldr	r0, [r0]
+  96              	.LVL3:
+  97              		.loc 1 37 32 view .LVU22
+  98 000e FFF7FEFF 		bl	HAL_SPI_Transmit
+  99              	.LVL4:
+  38:Drivers/spif/impl/spif_commander.c ****     return (status == HAL_OK);
+ 100              		.loc 1 38 5 is_stmt 1 view .LVU23
+ 101              		.loc 1 38 20 is_stmt 0 view .LVU24
+ 102 0012 4342     		rsbs	r3, r0, #0
+ 103 0014 5841     		adcs	r0, r0, r3
+ 104              	.LVL5:
+ 105              		.loc 1 38 20 view .LVU25
+ 106 0016 C0B2     		uxtb	r0, r0
+ 107              	.LVL6:
+ 108              	.L5:
+  39:Drivers/spif/impl/spif_commander.c **** }
+ 109              		.loc 1 39 1 view .LVU26
+ 110              		@ sp needed
+ 111 0018 10BD     		pop	{r4, pc}
+ 112              	.LVL7:
+ 113              	.L6:
+  35:Drivers/spif/impl/spif_commander.c **** 	}
+ 114              		.loc 1 35 11 view .LVU27
+ 115 001a 0020     		movs	r0, #0
+ 116              	.LVL8:
+  35:Drivers/spif/impl/spif_commander.c **** 	}
+ 117              		.loc 1 35 11 view .LVU28
+ 118 001c FCE7     		b	.L5
+ 119              	.LVL9:
+ 120              	.L7:
+  35:Drivers/spif/impl/spif_commander.c **** 	}
+ 121              		.loc 1 35 11 view .LVU29
+ 122 001e 0020     		movs	r0, #0
+ 123              	.LVL10:
+  35:Drivers/spif/impl/spif_commander.c **** 	}
+ 124              		.loc 1 35 11 view .LVU30
+ 125 0020 FAE7     		b	.L5
+ 126              		.cfi_endproc
+ 127              	.LFE364:
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 4
+
+
+ 129              		.section	.text.spif_commander_receive,"ax",%progbits
+ 130              		.align	1
+ 131              		.global	spif_commander_receive
+ 132              		.syntax unified
+ 133              		.code	16
+ 134              		.thumb_func
+ 136              	spif_commander_receive:
+ 137              	.LVL11:
+ 138              	.LFB365:
+  40:Drivers/spif/impl/spif_commander.c **** 
+  41:Drivers/spif/impl/spif_commander.c **** bool spif_commander_receive(spif_handle_t *handle, uint8_t *rx, uint32_t size, uint32_t timeout)
+  42:Drivers/spif/impl/spif_commander.c **** {
+ 139              		.loc 1 42 1 is_stmt 1 view -0
+ 140              		.cfi_startproc
+ 141              		@ args = 0, pretend = 0, frame = 0
+ 142              		@ frame_needed = 0, uses_anonymous_args = 0
+ 143              		.loc 1 42 1 is_stmt 0 view .LVU32
+ 144 0000 10B5     		push	{r4, lr}
+ 145              	.LCFI1:
+ 146              		.cfi_def_cfa_offset 8
+ 147              		.cfi_offset 4, -8
+ 148              		.cfi_offset 14, -4
+  43:Drivers/spif/impl/spif_commander.c **** 	if(handle == NULL || rx == NULL)
+ 149              		.loc 1 43 2 is_stmt 1 view .LVU33
+ 150              		.loc 1 43 4 is_stmt 0 view .LVU34
+ 151 0002 0028     		cmp	r0, #0
+ 152 0004 09D0     		beq	.L10
+ 153              		.loc 1 43 20 discriminator 1 view .LVU35
+ 154 0006 0029     		cmp	r1, #0
+ 155 0008 09D0     		beq	.L11
+  44:Drivers/spif/impl/spif_commander.c **** 	{
+  45:Drivers/spif/impl/spif_commander.c **** 	  return false;
+  46:Drivers/spif/impl/spif_commander.c **** 	}
+  47:Drivers/spif/impl/spif_commander.c **** 	HAL_StatusTypeDef status = HAL_SPI_Receive(handle->hspi, rx, (uint16_t)size, timeout);
+ 156              		.loc 1 47 2 is_stmt 1 view .LVU36
+ 157              		.loc 1 47 29 is_stmt 0 view .LVU37
+ 158 000a 92B2     		uxth	r2, r2
+ 159              	.LVL12:
+ 160              		.loc 1 47 29 view .LVU38
+ 161 000c 0068     		ldr	r0, [r0]
+ 162              	.LVL13:
+ 163              		.loc 1 47 29 view .LVU39
+ 164 000e FFF7FEFF 		bl	HAL_SPI_Receive
+ 165              	.LVL14:
+  48:Drivers/spif/impl/spif_commander.c **** 	return (status == HAL_OK);
+ 166              		.loc 1 48 2 is_stmt 1 view .LVU40
+ 167              		.loc 1 48 17 is_stmt 0 view .LVU41
+ 168 0012 4342     		rsbs	r3, r0, #0
+ 169 0014 5841     		adcs	r0, r0, r3
+ 170              	.LVL15:
+ 171              		.loc 1 48 17 view .LVU42
+ 172 0016 C0B2     		uxtb	r0, r0
+ 173              	.LVL16:
+ 174              	.L9:
+  49:Drivers/spif/impl/spif_commander.c **** }
+ 175              		.loc 1 49 1 view .LVU43
+ 176              		@ sp needed
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 5
+
+
+ 177 0018 10BD     		pop	{r4, pc}
+ 178              	.LVL17:
+ 179              	.L10:
+  45:Drivers/spif/impl/spif_commander.c **** 	}
+ 180              		.loc 1 45 11 view .LVU44
+ 181 001a 0020     		movs	r0, #0
+ 182              	.LVL18:
+  45:Drivers/spif/impl/spif_commander.c **** 	}
+ 183              		.loc 1 45 11 view .LVU45
+ 184 001c FCE7     		b	.L9
+ 185              	.LVL19:
+ 186              	.L11:
+  45:Drivers/spif/impl/spif_commander.c **** 	}
+ 187              		.loc 1 45 11 view .LVU46
+ 188 001e 0020     		movs	r0, #0
+ 189              	.LVL20:
+  45:Drivers/spif/impl/spif_commander.c **** 	}
+ 190              		.loc 1 45 11 view .LVU47
+ 191 0020 FAE7     		b	.L9
+ 192              		.cfi_endproc
+ 193              	.LFE365:
+ 195              		.section	.text.spif_commander_command,"ax",%progbits
+ 196              		.align	1
+ 197              		.global	spif_commander_command
+ 198              		.syntax unified
+ 199              		.code	16
+ 200              		.thumb_func
+ 202              	spif_commander_command:
+ 203              	.LVL21:
+ 204              	.LFB366:
+  50:Drivers/spif/impl/spif_commander.c **** 
+  51:Drivers/spif/impl/spif_commander.c **** bool spif_commander_command(spif_handle_t *handle, spif_cmd_t cmd)
+  52:Drivers/spif/impl/spif_commander.c **** {
+ 205              		.loc 1 52 1 is_stmt 1 view -0
+ 206              		.cfi_startproc
+ 207              		@ args = 0, pretend = 0, frame = 8
+ 208              		@ frame_needed = 0, uses_anonymous_args = 0
+ 209              		.loc 1 52 1 is_stmt 0 view .LVU49
+ 210 0000 30B5     		push	{r4, r5, lr}
+ 211              	.LCFI2:
+ 212              		.cfi_def_cfa_offset 12
+ 213              		.cfi_offset 4, -12
+ 214              		.cfi_offset 5, -8
+ 215              		.cfi_offset 14, -4
+ 216 0002 83B0     		sub	sp, sp, #12
+ 217              	.LCFI3:
+ 218              		.cfi_def_cfa_offset 24
+ 219 0004 041E     		subs	r4, r0, #0
+  53:Drivers/spif/impl/spif_commander.c **** 	if(handle == NULL)
+ 220              		.loc 1 53 2 is_stmt 1 view .LVU50
+ 221              		.loc 1 53 4 is_stmt 0 view .LVU51
+ 222 0006 13D0     		beq	.L14
+  54:Drivers/spif/impl/spif_commander.c **** 	{
+  55:Drivers/spif/impl/spif_commander.c **** 	  return false;
+  56:Drivers/spif/impl/spif_commander.c **** 	}
+  57:Drivers/spif/impl/spif_commander.c **** 	uint8_t cmd_byte = (uint8_t)cmd;
+ 223              		.loc 1 57 2 is_stmt 1 view .LVU52
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 6
+
+
+ 224              		.loc 1 57 10 is_stmt 0 view .LVU53
+ 225 0008 6B46     		mov	r3, sp
+ 226 000a DD1D     		adds	r5, r3, #7
+ 227 000c D971     		strb	r1, [r3, #7]
+  58:Drivers/spif/impl/spif_commander.c **** 	bool ret_val = false;
+ 228              		.loc 1 58 2 is_stmt 1 view .LVU54
+ 229              	.LVL22:
+  59:Drivers/spif/impl/spif_commander.c **** 	spif_commander_cs(handle, true);
+ 230              		.loc 1 59 2 view .LVU55
+ 231 000e 0121     		movs	r1, #1
+ 232              	.LVL23:
+ 233              		.loc 1 59 2 is_stmt 0 view .LVU56
+ 234 0010 FFF7FEFF 		bl	spif_commander_cs
+ 235              	.LVL24:
+  60:Drivers/spif/impl/spif_commander.c **** 	ret_val = spif_commander_transmit(handle, &cmd_byte, 1, SPIF_TIMEOUT_CMD);
+ 236              		.loc 1 60 2 is_stmt 1 view .LVU57
+ 237              		.loc 1 60 12 is_stmt 0 view .LVU58
+ 238 0014 6423     		movs	r3, #100
+ 239 0016 0122     		movs	r2, #1
+ 240 0018 2900     		movs	r1, r5
+ 241 001a 2000     		movs	r0, r4
+ 242 001c FFF7FEFF 		bl	spif_commander_transmit
+ 243              	.LVL25:
+ 244 0020 0500     		movs	r5, r0
+ 245              	.LVL26:
+  61:Drivers/spif/impl/spif_commander.c **** 	spif_commander_cs(handle, false);
+ 246              		.loc 1 61 2 is_stmt 1 view .LVU59
+ 247 0022 0021     		movs	r1, #0
+ 248 0024 2000     		movs	r0, r4
+ 249              	.LVL27:
+ 250              		.loc 1 61 2 is_stmt 0 view .LVU60
+ 251 0026 FFF7FEFF 		bl	spif_commander_cs
+ 252              	.LVL28:
+  62:Drivers/spif/impl/spif_commander.c **** 
+  63:Drivers/spif/impl/spif_commander.c **** 	return ret_val;
+ 253              		.loc 1 63 2 is_stmt 1 view .LVU61
+ 254              	.L13:
+  64:Drivers/spif/impl/spif_commander.c **** }
+ 255              		.loc 1 64 1 is_stmt 0 view .LVU62
+ 256 002a 2800     		movs	r0, r5
+ 257 002c 03B0     		add	sp, sp, #12
+ 258              		@ sp needed
+ 259              	.LVL29:
+ 260              		.loc 1 64 1 view .LVU63
+ 261 002e 30BD     		pop	{r4, r5, pc}
+ 262              	.LVL30:
+ 263              	.L14:
+  55:Drivers/spif/impl/spif_commander.c **** 	}
+ 264              		.loc 1 55 11 view .LVU64
+ 265 0030 0025     		movs	r5, #0
+ 266 0032 FAE7     		b	.L13
+ 267              		.cfi_endproc
+ 268              	.LFE366:
+ 270              		.section	.text.spif_commander_command_address,"ax",%progbits
+ 271              		.align	1
+ 272              		.global	spif_commander_command_address
+ 273              		.syntax unified
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 7
+
+
+ 274              		.code	16
+ 275              		.thumb_func
+ 277              	spif_commander_command_address:
+ 278              	.LVL31:
+ 279              	.LFB367:
+  65:Drivers/spif/impl/spif_commander.c **** 
+  66:Drivers/spif/impl/spif_commander.c **** bool spif_commander_command_address(spif_handle_t *handle, spif_cmd_t cmd_3addr, spif_cmd_t cmd_4ad
+  67:Drivers/spif/impl/spif_commander.c ****                                     uint32_t address)
+  68:Drivers/spif/impl/spif_commander.c **** {
+ 280              		.loc 1 68 1 is_stmt 1 view -0
+ 281              		.cfi_startproc
+ 282              		@ args = 0, pretend = 0, frame = 8
+ 283              		@ frame_needed = 0, uses_anonymous_args = 0
+ 284              		.loc 1 68 1 is_stmt 0 view .LVU66
+ 285 0000 30B5     		push	{r4, r5, lr}
+ 286              	.LCFI4:
+ 287              		.cfi_def_cfa_offset 12
+ 288              		.cfi_offset 4, -12
+ 289              		.cfi_offset 5, -8
+ 290              		.cfi_offset 14, -4
+ 291 0002 83B0     		sub	sp, sp, #12
+ 292              	.LCFI5:
+ 293              		.cfi_def_cfa_offset 24
+ 294 0004 0500     		movs	r5, r0
+ 295 0006 0800     		movs	r0, r1
+ 296              	.LVL32:
+ 297              		.loc 1 68 1 view .LVU67
+ 298 0008 1C00     		movs	r4, r3
+  69:Drivers/spif/impl/spif_commander.c **** 	if(handle == NULL)
+ 299              		.loc 1 69 2 is_stmt 1 view .LVU68
+ 300              		.loc 1 69 4 is_stmt 0 view .LVU69
+ 301 000a 002D     		cmp	r5, #0
+ 302 000c 2AD0     		beq	.L20
+  70:Drivers/spif/impl/spif_commander.c **** 	{
+  71:Drivers/spif/impl/spif_commander.c **** 	  return false;
+  72:Drivers/spif/impl/spif_commander.c **** 	}
+  73:Drivers/spif/impl/spif_commander.c **** 
+  74:Drivers/spif/impl/spif_commander.c **** 	bool use_4addr = (address > SPIF_MAX_3ADDR_ADDRESS);
+ 303              		.loc 1 74 2 is_stmt 1 view .LVU70
+ 304              	.LVL33:
+  75:Drivers/spif/impl/spif_commander.c **** 
+  76:Drivers/spif/impl/spif_commander.c **** 	uint8_t cmd_byte = use_4addr ? (uint8_t)cmd_4addr : (uint8_t)cmd_3addr;
+ 305              		.loc 1 76 2 view .LVU71
+ 306              		.loc 1 76 10 is_stmt 0 view .LVU72
+ 307 000e 8023     		movs	r3, #128
+ 308              	.LVL34:
+ 309              		.loc 1 76 10 view .LVU73
+ 310 0010 5B04     		lsls	r3, r3, #17
+ 311 0012 9C42     		cmp	r4, r3
+ 312 0014 00D3     		bcc	.L17
+ 313              		.loc 1 76 10 discriminator 1 view .LVU74
+ 314 0016 1000     		movs	r0, r2
+ 315              	.L17:
+ 316              		.loc 1 76 10 discriminator 4 view .LVU75
+ 317 0018 6B46     		mov	r3, sp
+ 318 001a D91D     		adds	r1, r3, #7
+ 319              	.LVL35:
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 8
+
+
+ 320              		.loc 1 76 10 discriminator 4 view .LVU76
+ 321 001c 0870     		strb	r0, [r1]
+  77:Drivers/spif/impl/spif_commander.c **** 
+  78:Drivers/spif/impl/spif_commander.c **** 	if(!spif_commander_transmit(handle, &cmd_byte, 1, SPIF_TIMEOUT_CMD))
+ 322              		.loc 1 78 2 is_stmt 1 view .LVU77
+ 323              		.loc 1 78 6 is_stmt 0 view .LVU78
+ 324 001e 6423     		movs	r3, #100
+ 325 0020 0122     		movs	r2, #1
+ 326              	.LVL36:
+ 327              		.loc 1 78 6 view .LVU79
+ 328 0022 2800     		movs	r0, r5
+ 329 0024 FFF7FEFF 		bl	spif_commander_transmit
+ 330              	.LVL37:
+ 331              		.loc 1 78 4 discriminator 1 view .LVU80
+ 332 0028 0028     		cmp	r0, #0
+ 333 002a 11D0     		beq	.L16
+  79:Drivers/spif/impl/spif_commander.c **** 	{
+  80:Drivers/spif/impl/spif_commander.c **** 	  return false;
+  81:Drivers/spif/impl/spif_commander.c **** 	}
+  82:Drivers/spif/impl/spif_commander.c **** 
+  83:Drivers/spif/impl/spif_commander.c **** 	uint8_t addr_bytes[4];
+ 334              		.loc 1 83 2 is_stmt 1 view .LVU81
+  84:Drivers/spif/impl/spif_commander.c **** 	uint32_t addr_size;
+ 335              		.loc 1 84 2 view .LVU82
+  85:Drivers/spif/impl/spif_commander.c **** 
+  86:Drivers/spif/impl/spif_commander.c **** 	if(use_4addr)
+ 336              		.loc 1 86 2 view .LVU83
+ 337              		.loc 1 86 4 is_stmt 0 view .LVU84
+ 338 002c 8023     		movs	r3, #128
+ 339 002e 5B04     		lsls	r3, r3, #17
+ 340 0030 9C42     		cmp	r4, r3
+ 341 0032 0FD3     		bcc	.L18
+  87:Drivers/spif/impl/spif_commander.c **** 	{
+  88:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[0] = (uint8_t)(address >> 24);
+ 342              		.loc 1 88 4 is_stmt 1 view .LVU85
+ 343              		.loc 1 88 20 is_stmt 0 view .LVU86
+ 344 0034 220E     		lsrs	r2, r4, #24
+ 345              		.loc 1 88 18 view .LVU87
+ 346 0036 6B46     		mov	r3, sp
+ 347 0038 1A70     		strb	r2, [r3]
+  89:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[1] = (uint8_t)(address >> 16);
+ 348              		.loc 1 89 4 is_stmt 1 view .LVU88
+ 349              		.loc 1 89 38 is_stmt 0 view .LVU89
+ 350 003a 220C     		lsrs	r2, r4, #16
+ 351              		.loc 1 89 18 view .LVU90
+ 352 003c 5A70     		strb	r2, [r3, #1]
+  90:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[2] = (uint8_t)(address >> 8);
+ 353              		.loc 1 90 4 is_stmt 1 view .LVU91
+ 354              		.loc 1 90 38 is_stmt 0 view .LVU92
+ 355 003e 220A     		lsrs	r2, r4, #8
+ 356              		.loc 1 90 18 view .LVU93
+ 357 0040 9A70     		strb	r2, [r3, #2]
+  91:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[3] = (uint8_t)(address);
+ 358              		.loc 1 91 4 is_stmt 1 view .LVU94
+ 359              		.loc 1 91 18 is_stmt 0 view .LVU95
+ 360 0042 DC70     		strb	r4, [r3, #3]
+  92:Drivers/spif/impl/spif_commander.c **** 	  addr_size = 4;
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 9
+
+
+ 361              		.loc 1 92 4 is_stmt 1 view .LVU96
+ 362              	.LVL38:
+ 363              		.loc 1 92 14 is_stmt 0 view .LVU97
+ 364 0044 0422     		movs	r2, #4
+ 365              	.LVL39:
+ 366              	.L19:
+  93:Drivers/spif/impl/spif_commander.c **** 	}
+  94:Drivers/spif/impl/spif_commander.c **** 	else
+  95:Drivers/spif/impl/spif_commander.c **** 	{
+  96:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[0] = (uint8_t)(address >> 16);
+  97:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[1] = (uint8_t)(address >> 8);
+  98:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[2] = (uint8_t)(address);
+  99:Drivers/spif/impl/spif_commander.c **** 	  addr_size = 3;
+ 100:Drivers/spif/impl/spif_commander.c **** 	}
+ 101:Drivers/spif/impl/spif_commander.c **** 
+ 102:Drivers/spif/impl/spif_commander.c **** 	return spif_commander_transmit(handle, addr_bytes, addr_size, SPIF_TIMEOUT_CMD);
+ 367              		.loc 1 102 2 is_stmt 1 view .LVU98
+ 368              		.loc 1 102 9 is_stmt 0 view .LVU99
+ 369 0046 6423     		movs	r3, #100
+ 370 0048 6946     		mov	r1, sp
+ 371 004a 2800     		movs	r0, r5
+ 372 004c FFF7FEFF 		bl	spif_commander_transmit
+ 373              	.LVL40:
+ 374              	.L16:
+ 103:Drivers/spif/impl/spif_commander.c **** }
+ 375              		.loc 1 103 1 view .LVU100
+ 376 0050 03B0     		add	sp, sp, #12
+ 377              		@ sp needed
+ 378              	.LVL41:
+ 379              	.LVL42:
+ 380              		.loc 1 103 1 view .LVU101
+ 381 0052 30BD     		pop	{r4, r5, pc}
+ 382              	.LVL43:
+ 383              	.L18:
+  96:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[1] = (uint8_t)(address >> 8);
+ 384              		.loc 1 96 4 is_stmt 1 view .LVU102
+  96:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[1] = (uint8_t)(address >> 8);
+ 385              		.loc 1 96 38 is_stmt 0 view .LVU103
+ 386 0054 220C     		lsrs	r2, r4, #16
+  96:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[1] = (uint8_t)(address >> 8);
+ 387              		.loc 1 96 18 view .LVU104
+ 388 0056 6B46     		mov	r3, sp
+ 389 0058 1A70     		strb	r2, [r3]
+  97:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[2] = (uint8_t)(address);
+ 390              		.loc 1 97 4 is_stmt 1 view .LVU105
+  97:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[2] = (uint8_t)(address);
+ 391              		.loc 1 97 38 is_stmt 0 view .LVU106
+ 392 005a 220A     		lsrs	r2, r4, #8
+  97:Drivers/spif/impl/spif_commander.c **** 	  addr_bytes[2] = (uint8_t)(address);
+ 393              		.loc 1 97 18 view .LVU107
+ 394 005c 5A70     		strb	r2, [r3, #1]
+  98:Drivers/spif/impl/spif_commander.c **** 	  addr_size = 3;
+ 395              		.loc 1 98 4 is_stmt 1 view .LVU108
+  98:Drivers/spif/impl/spif_commander.c **** 	  addr_size = 3;
+ 396              		.loc 1 98 18 is_stmt 0 view .LVU109
+ 397 005e 9C70     		strb	r4, [r3, #2]
+  99:Drivers/spif/impl/spif_commander.c **** 	}
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 10
+
+
+ 398              		.loc 1 99 4 is_stmt 1 view .LVU110
+ 399              	.LVL44:
+  99:Drivers/spif/impl/spif_commander.c **** 	}
+ 400              		.loc 1 99 14 is_stmt 0 view .LVU111
+ 401 0060 0322     		movs	r2, #3
+ 402 0062 F0E7     		b	.L19
+ 403              	.LVL45:
+ 404              	.L20:
+  71:Drivers/spif/impl/spif_commander.c **** 	}
+ 405              		.loc 1 71 11 view .LVU112
+ 406 0064 0020     		movs	r0, #0
+ 407 0066 F3E7     		b	.L16
+ 408              		.cfi_endproc
+ 409              	.LFE367:
+ 411              		.section	.text.spif_commander_read_status,"ax",%progbits
+ 412              		.align	1
+ 413              		.global	spif_commander_read_status
+ 414              		.syntax unified
+ 415              		.code	16
+ 416              		.thumb_func
+ 418              	spif_commander_read_status:
+ 419              	.LVL46:
+ 420              	.LFB368:
+ 104:Drivers/spif/impl/spif_commander.c **** 
+ 105:Drivers/spif/impl/spif_commander.c **** uint8_t spif_commander_read_status(spif_handle_t *handle)
+ 106:Drivers/spif/impl/spif_commander.c **** {
+ 421              		.loc 1 106 1 is_stmt 1 view -0
+ 422              		.cfi_startproc
+ 423              		@ args = 0, pretend = 0, frame = 8
+ 424              		@ frame_needed = 0, uses_anonymous_args = 0
+ 425              		.loc 1 106 1 is_stmt 0 view .LVU114
+ 426 0000 70B5     		push	{r4, r5, r6, lr}
+ 427              	.LCFI6:
+ 428              		.cfi_def_cfa_offset 16
+ 429              		.cfi_offset 4, -16
+ 430              		.cfi_offset 5, -12
+ 431              		.cfi_offset 6, -8
+ 432              		.cfi_offset 14, -4
+ 433 0002 82B0     		sub	sp, sp, #8
+ 434              	.LCFI7:
+ 435              		.cfi_def_cfa_offset 24
+ 436 0004 041E     		subs	r4, r0, #0
+ 107:Drivers/spif/impl/spif_commander.c **** 	if(handle == NULL)
+ 437              		.loc 1 107 2 is_stmt 1 view .LVU115
+ 438              		.loc 1 107 4 is_stmt 0 view .LVU116
+ 439 0006 1DD0     		beq	.L23
+ 108:Drivers/spif/impl/spif_commander.c **** 	{
+ 109:Drivers/spif/impl/spif_commander.c **** 	  return 0xFF;
+ 110:Drivers/spif/impl/spif_commander.c **** 	}
+ 111:Drivers/spif/impl/spif_commander.c **** 
+ 112:Drivers/spif/impl/spif_commander.c **** 	uint8_t cmd_byte = (uint8_t)SPIF_CMD_READ_STATUS1;
+ 440              		.loc 1 112 2 is_stmt 1 view .LVU117
+ 441              		.loc 1 112 10 is_stmt 0 view .LVU118
+ 442 0008 6B46     		mov	r3, sp
+ 443 000a DE1D     		adds	r6, r3, #7
+ 444 000c 0523     		movs	r3, #5
+ 445 000e 3370     		strb	r3, [r6]
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 11
+
+
+ 113:Drivers/spif/impl/spif_commander.c **** 	uint8_t status = 0xFF;
+ 446              		.loc 1 113 2 is_stmt 1 view .LVU119
+ 447              		.loc 1 113 10 is_stmt 0 view .LVU120
+ 448 0010 6B46     		mov	r3, sp
+ 449 0012 9D1D     		adds	r5, r3, #6
+ 450 0014 FF23     		movs	r3, #255
+ 451 0016 2B70     		strb	r3, [r5]
+ 114:Drivers/spif/impl/spif_commander.c **** 
+ 115:Drivers/spif/impl/spif_commander.c **** 	spif_commander_cs(handle, true);
+ 452              		.loc 1 115 2 is_stmt 1 view .LVU121
+ 453 0018 0121     		movs	r1, #1
+ 454 001a FFF7FEFF 		bl	spif_commander_cs
+ 455              	.LVL47:
+ 116:Drivers/spif/impl/spif_commander.c **** 	spif_commander_transmit(handle, &cmd_byte, 1, SPIF_TIMEOUT_CMD);
+ 456              		.loc 1 116 2 view .LVU122
+ 457 001e 6423     		movs	r3, #100
+ 458 0020 0122     		movs	r2, #1
+ 459 0022 3100     		movs	r1, r6
+ 460 0024 2000     		movs	r0, r4
+ 461 0026 FFF7FEFF 		bl	spif_commander_transmit
+ 462              	.LVL48:
+ 117:Drivers/spif/impl/spif_commander.c **** 	spif_commander_receive(handle, &status, 1, SPIF_TIMEOUT_CMD);
+ 463              		.loc 1 117 2 view .LVU123
+ 464 002a 6423     		movs	r3, #100
+ 465 002c 0122     		movs	r2, #1
+ 466 002e 2900     		movs	r1, r5
+ 467 0030 2000     		movs	r0, r4
+ 468 0032 FFF7FEFF 		bl	spif_commander_receive
+ 469              	.LVL49:
+ 118:Drivers/spif/impl/spif_commander.c **** 	spif_commander_cs(handle, false);
+ 470              		.loc 1 118 2 view .LVU124
+ 471 0036 0021     		movs	r1, #0
+ 472 0038 2000     		movs	r0, r4
+ 473 003a FFF7FEFF 		bl	spif_commander_cs
+ 474              	.LVL50:
+ 119:Drivers/spif/impl/spif_commander.c **** 
+ 120:Drivers/spif/impl/spif_commander.c **** 	return status;
+ 475              		.loc 1 120 2 view .LVU125
+ 476              		.loc 1 120 9 is_stmt 0 view .LVU126
+ 477 003e 2878     		ldrb	r0, [r5]
+ 478              	.L22:
+ 121:Drivers/spif/impl/spif_commander.c **** }
+ 479              		.loc 1 121 1 view .LVU127
+ 480 0040 02B0     		add	sp, sp, #8
+ 481              		@ sp needed
+ 482              	.LVL51:
+ 483              		.loc 1 121 1 view .LVU128
+ 484 0042 70BD     		pop	{r4, r5, r6, pc}
+ 485              	.LVL52:
+ 486              	.L23:
+ 109:Drivers/spif/impl/spif_commander.c **** 	}
+ 487              		.loc 1 109 11 view .LVU129
+ 488 0044 FF20     		movs	r0, #255
+ 489              	.LVL53:
+ 109:Drivers/spif/impl/spif_commander.c **** 	}
+ 490              		.loc 1 109 11 view .LVU130
+ 491 0046 FBE7     		b	.L22
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 12
+
+
+ 492              		.cfi_endproc
+ 493              	.LFE368:
+ 495              		.section	.text.spif_commander_wait_for_writing,"ax",%progbits
+ 496              		.align	1
+ 497              		.global	spif_commander_wait_for_writing
+ 498              		.syntax unified
+ 499              		.code	16
+ 500              		.thumb_func
+ 502              	spif_commander_wait_for_writing:
+ 503              	.LVL54:
+ 504              	.LFB369:
+ 122:Drivers/spif/impl/spif_commander.c **** 
+ 123:Drivers/spif/impl/spif_commander.c **** bool spif_commander_wait_for_writing(spif_handle_t *handle, uint32_t timeout)
+ 124:Drivers/spif/impl/spif_commander.c **** {
+ 505              		.loc 1 124 1 is_stmt 1 view -0
+ 506              		.cfi_startproc
+ 507              		@ args = 0, pretend = 0, frame = 0
+ 508              		@ frame_needed = 0, uses_anonymous_args = 0
+ 509              		.loc 1 124 1 is_stmt 0 view .LVU132
+ 510 0000 70B5     		push	{r4, r5, r6, lr}
+ 511              	.LCFI8:
+ 512              		.cfi_def_cfa_offset 16
+ 513              		.cfi_offset 4, -16
+ 514              		.cfi_offset 5, -12
+ 515              		.cfi_offset 6, -8
+ 516              		.cfi_offset 14, -4
+ 517 0002 0400     		movs	r4, r0
+ 518 0004 0D00     		movs	r5, r1
+ 125:Drivers/spif/impl/spif_commander.c **** 	if(handle == NULL)
+ 519              		.loc 1 125 2 is_stmt 1 view .LVU133
+ 520              		.loc 1 125 4 is_stmt 0 view .LVU134
+ 521 0006 0028     		cmp	r0, #0
+ 522 0008 10D0     		beq	.L28
+ 126:Drivers/spif/impl/spif_commander.c **** 	{
+ 127:Drivers/spif/impl/spif_commander.c **** 	  return false;
+ 128:Drivers/spif/impl/spif_commander.c **** 	}
+ 129:Drivers/spif/impl/spif_commander.c **** 
+ 130:Drivers/spif/impl/spif_commander.c **** 	uint32_t start_tick = HAL_GetTick();
+ 523              		.loc 1 130 2 is_stmt 1 view .LVU135
+ 524              		.loc 1 130 24 is_stmt 0 view .LVU136
+ 525 000a FFF7FEFF 		bl	HAL_GetTick
+ 526              	.LVL55:
+ 527              		.loc 1 130 24 view .LVU137
+ 528 000e 0600     		movs	r6, r0
+ 529              	.LVL56:
+ 131:Drivers/spif/impl/spif_commander.c **** 
+ 132:Drivers/spif/impl/spif_commander.c **** 	    while (spif_commander_read_status(handle) & SPIF_STATUS1_BUSY)
+ 530              		.loc 1 132 6 is_stmt 1 view .LVU138
+ 531              	.L26:
+ 532              		.loc 1 132 13 view .LVU139
+ 533 0010 2000     		movs	r0, r4
+ 534 0012 FFF7FEFF 		bl	spif_commander_read_status
+ 535              	.LVL57:
+ 536              		.loc 1 132 13 is_stmt 0 discriminator 1 view .LVU140
+ 537 0016 C007     		lsls	r0, r0, #31
+ 538 0018 06D5     		bpl	.L30
+ 133:Drivers/spif/impl/spif_commander.c **** 	    {
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 13
+
+
+ 134:Drivers/spif/impl/spif_commander.c **** 	        if ((HAL_GetTick() - start_tick) >= timeout)
+ 539              		.loc 1 134 10 is_stmt 1 view .LVU141
+ 540              		.loc 1 134 15 is_stmt 0 view .LVU142
+ 541 001a FFF7FEFF 		bl	HAL_GetTick
+ 542              	.LVL58:
+ 543              		.loc 1 134 29 discriminator 1 view .LVU143
+ 544 001e 801B     		subs	r0, r0, r6
+ 545              		.loc 1 134 13 discriminator 1 view .LVU144
+ 546 0020 A842     		cmp	r0, r5
+ 547 0022 F5D3     		bcc	.L26
+ 135:Drivers/spif/impl/spif_commander.c **** 	        {
+ 136:Drivers/spif/impl/spif_commander.c **** 	            return false;
+ 548              		.loc 1 136 21 view .LVU145
+ 549 0024 0020     		movs	r0, #0
+ 550 0026 00E0     		b	.L25
+ 551              	.L30:
+ 137:Drivers/spif/impl/spif_commander.c **** 	        }
+ 138:Drivers/spif/impl/spif_commander.c **** 	    }
+ 139:Drivers/spif/impl/spif_commander.c **** 
+ 140:Drivers/spif/impl/spif_commander.c **** 	    return true;
+ 552              		.loc 1 140 13 view .LVU146
+ 553 0028 0120     		movs	r0, #1
+ 554              	.LVL59:
+ 555              	.L25:
+ 141:Drivers/spif/impl/spif_commander.c **** }
+ 556              		.loc 1 141 1 view .LVU147
+ 557              		@ sp needed
+ 558              	.LVL60:
+ 559              	.LVL61:
+ 560              		.loc 1 141 1 view .LVU148
+ 561 002a 70BD     		pop	{r4, r5, r6, pc}
+ 562              	.LVL62:
+ 563              	.L28:
+ 127:Drivers/spif/impl/spif_commander.c **** 	}
+ 564              		.loc 1 127 11 view .LVU149
+ 565 002c 0020     		movs	r0, #0
+ 566              	.LVL63:
+ 127:Drivers/spif/impl/spif_commander.c **** 	}
+ 567              		.loc 1 127 11 view .LVU150
+ 568 002e FCE7     		b	.L25
+ 569              		.cfi_endproc
+ 570              	.LFE369:
+ 572              		.text
+ 573              	.Letext0:
+ 574              		.file 2 "C:\\ST\\STM32CubeIDE_2.2.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools
+ 575              		.file 3 "C:\\ST\\STM32CubeIDE_2.2.0\\STM32CubeIDE\\plugins\\com.st.stm32cube.ide.mcu.externaltools
+ 576              		.file 4 "Drivers/CMSIS/Device/ST/STM32G0xx/Include/stm32g0b1xx.h"
+ 577              		.file 5 "Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_def.h"
+ 578              		.file 6 "Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_dma.h"
+ 579              		.file 7 "Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal_spi.h"
+ 580              		.file 8 "Drivers/spif/spif.h"
+ 581              		.file 9 "Drivers/spif/incl/spif_commander.h"
+ 582              		.file 10 "Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_dma.h"
+ 583              		.file 11 "Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_hal.h"
+ARM GAS  C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s 			page 14
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 spif_commander.c
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:19     .text.spif_commander_cs:00000000 $t
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:25     .text.spif_commander_cs:00000000 spif_commander_cs
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:64     .text.spif_commander_transmit:00000000 $t
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:70     .text.spif_commander_transmit:00000000 spif_commander_transmit
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:130    .text.spif_commander_receive:00000000 $t
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:136    .text.spif_commander_receive:00000000 spif_commander_receive
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:196    .text.spif_commander_command:00000000 $t
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:202    .text.spif_commander_command:00000000 spif_commander_command
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:271    .text.spif_commander_command_address:00000000 $t
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:277    .text.spif_commander_command_address:00000000 spif_commander_command_address
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:412    .text.spif_commander_read_status:00000000 $t
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:418    .text.spif_commander_read_status:00000000 spif_commander_read_status
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:496    .text.spif_commander_wait_for_writing:00000000 $t
+C:\Users\Domagoj\AppData\Local\Temp\ccMDkPtT.s:502    .text.spif_commander_wait_for_writing:00000000 spif_commander_wait_for_writing
+
+UNDEFINED SYMBOLS
+HAL_SPI_Transmit
+HAL_SPI_Receive
+HAL_GetTick
