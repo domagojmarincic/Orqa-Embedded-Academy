@@ -69,10 +69,16 @@ bool spif_utils_capacity_to_block_count(uint8_t capacity, uint32_t *block_count)
 	{
 	  return false;
 	}
-	if((1U << capacity) < SPIF_BLOCK_SIZE)
+	if((capacity >= 0x11) && (capacity <= 0x1A))
 	{
-	  return false;
+	  *block_count = (1u << (capacity - 0x10));
+	  return true;
 	}
-    *block_count = (1U << capacity)/SPIF_BLOCK_SIZE;
-    return true;
+	if(capacity == 0x20)
+	{
+	  *block_count = 1024;
+	  return true;
+	}
+
+	return false;
 }
