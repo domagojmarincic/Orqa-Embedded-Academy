@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "spi.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -90,6 +91,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_SPI2_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   /* printf() goes out over USART2 -> ST-Link Virtual COM Port, see _write() below */
@@ -99,23 +101,34 @@ int main(void)
   /* TODO Step 1: enable SPI2 and the chip select pin in CubeMX (see Docs/), regenerate,
    *              then uncomment the two blocks below. MX_SPI2_Init() is generated above.
    *
-   * if (spif_test_run(&hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
-   * {
-   *   HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
-   * }
-   *
-   * if (!spif_init(&spif, &hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
-   * {
-   *   printf("spif_init() failed\r\n");
-   *   Error_Handler();
-   * }
    */
+  if (!spif_init(&spif, &hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
+  {
+      printf("spif_init() failed\r\n");
+      Error_Handler();
+  }
+
+  if (spif_test_run(&hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
+  {
+    HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
+  }
+
+  if (!spif_init(&spif, &hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
+  {
+    printf("spif_init() failed\r\n");
+    Error_Handler();
+  }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  /*
+    HAL_GPIO_TogglePin(test_led_GPIO_Port, test_led_Pin);
+	HAL_Delay(500);
+*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -154,7 +167,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
