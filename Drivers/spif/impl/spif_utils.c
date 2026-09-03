@@ -31,6 +31,10 @@ bool spif_utils_check_range(const spif_handle_t *handle, uint32_t address, uint3
 	{
 	  return false;
 	}
+	if(size == 0)
+	{
+	  return false;
+	}
 	if(address >= handle->total_size )
 	{
 	  return false;
