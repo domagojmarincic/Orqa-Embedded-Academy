@@ -49,6 +49,8 @@
 
 /* USER CODE BEGIN PV */
 spif_handle_t spif;
+static uint8_t tx_buf_dbg[16];
+static uint8_t rx_buf_dbg[16];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -102,7 +104,30 @@ int main(void)
    *              then uncomment the two blocks below. MX_SPI2_Init() is generated above.
    *
    */
-/*  if (spif_test_run(&hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
+  if (!spif_init(&spif, &hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
+  {
+      printf("spif_init() failed\r\n");
+      Error_Handler();
+  }
+
+  /* PRIVREMENO - debug test_bad_parameters */
+  uint32_t dbg_sector_cnt = spif.block_cnt * (SPIF_BLOCK_SIZE / SPIF_SECTOR_SIZE);
+  uint32_t dbg_page_cnt   = spif.block_cnt * (SPIF_BLOCK_SIZE / SPIF_PAGE_SIZE);
+
+  printf("1: %d\r\n", spif_write_page(&spif, dbg_page_cnt, tx_buf_dbg, 16, 0));
+  printf("2: %d\r\n", spif_read_page(&spif, dbg_page_cnt, rx_buf_dbg, 16, 0));
+  printf("3: %d\r\n", spif_erase_sector(&spif, dbg_sector_cnt));
+  printf("4: %d\r\n", spif_erase_block(&spif, spif.block_cnt));
+  printf("5: %d\r\n", spif_write_page(&spif, 0, tx_buf_dbg, 16, SPIF_PAGE_SIZE));
+  printf("6: %d\r\n", spif_read_sector(&spif, 0, rx_buf_dbg, 16, SPIF_SECTOR_SIZE));
+  printf("7: %d\r\n", spif_read_block(&spif, 0, rx_buf_dbg, 16, SPIF_BLOCK_SIZE));
+  printf("8: %d\r\n", spif_read_address(&spif, spif.total_size - 4, rx_buf_dbg, 16));
+  printf("9: %d\r\n", spif_write_address(&spif, 0, NULL, 16));
+  printf("10: %d\r\n", spif_read_address(&spif, 0, rx_buf_dbg, 0));
+  printf("11: %d\r\n", spif_erase_chip(NULL));
+  /* KRAJ PRIVREMENOG */
+
+  if (spif_test_run(&hspi2, SPI2_CS_GPIO_Port, SPI2_CS_Pin))
   {
     HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_SET);
   }
@@ -112,7 +137,7 @@ int main(void)
     printf("spif_init() failed\r\n");
     Error_Handler();
   }
-*/
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
