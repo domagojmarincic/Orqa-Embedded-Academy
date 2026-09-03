@@ -67,7 +67,7 @@ Drivers/spif/impl/spif_utils.c \
 Tests/spif_tests/spif_tests.c \
 Core/Src/spi.c
 # ASM sources
-# ASM sources# ASM sources# ASM sources# ASM sources# ASM sources# ASM sources# ASM sources# ASM sources# ASM sourcesASM_SOURCES =  \
+ASM_SOURCES =  \
 startup_stm32g0b1xx.s
 
 # ASMM sources
