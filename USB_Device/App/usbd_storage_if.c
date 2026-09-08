@@ -291,30 +291,26 @@ int8_t STORAGE_Write_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t b
     uint32_t sector_index  = current / SPIF_SECTOR_SIZE;
     uint32_t sector_start  = sector_index * SPIF_SECTOR_SIZE;
     uint32_t offset_in_sec = current - sector_start;
-    uint32_t remaining     = size - written;
-    uint32_t chunk         = remaining;
+    //uint32_t remaining     = size - written;
+    uint32_t chunk         = size - written;
 
     if(offset_in_sec + chunk > SPIF_SECTOR_SIZE)
     {
       chunk = SPIF_SECTOR_SIZE - offset_in_sec;
     }
 
-      /* 1. pročitaj cijeli postojeći sektor u RAM */
     if(!spif_read_address(&spif, sector_start, sector_cache, SPIF_SECTOR_SIZE))
     {
       return (USBD_FAIL);
     }
 
-      /* 2. u kopiji u RAM-u, prepiši SAMO dio koji se stvarno mijenja */
     memcpy(sector_cache + offset_in_sec, buf + written, chunk);
 
-      /* 3. obriši cijeli sektor na čipu (nužno prije bilo kakvog ponovnog pisanja) */
     if(!spif_erase_sector(&spif, sector_index))
     {
       return (USBD_FAIL);
     }
 
-      /* 4. zapiši natrag CIJELI (izmijenjeni) sektor */
     if(!spif_write_sector(&spif, sector_index, sector_cache, SPIF_SECTOR_SIZE, 0))
     {
       return (USBD_FAIL);
