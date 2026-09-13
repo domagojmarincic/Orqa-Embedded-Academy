@@ -188,8 +188,6 @@ int8_t STORAGE_Init_FS(uint8_t lun)
   /* USER CODE BEGIN 2 */
   UNUSED(lun);
 
-  printf("STORAGE_Init_FS called, spif.inited=%d\r\n", spif.inited);
-
   return spif.inited ? (USBD_OK) : (USBD_FAIL);
   /* USER CODE END 2 */
 }
@@ -206,14 +204,9 @@ int8_t STORAGE_GetCapacity_FS(uint8_t lun, uint32_t *block_num, uint16_t *block_
   /* USER CODE BEGIN 3 */
   UNUSED(lun);
 
-//  *block_num  = STORAGE_BLK_NBR;
-//  *block_size = STORAGE_BLK_SIZ;
-
   *block_size = STORAGE_BLK_SIZ;
   *block_num = spif.total_size/STORAGE_BLK_SIZ;
 
-  printf("GetCapacity: total_size=%lu, block_num=%lu, block_size=%u\r\n",
-           (unsigned long)spif.total_size, (unsigned long)*block_num, *block_size);
 
   return (USBD_OK);
   /* USER CODE END 3 */
@@ -228,8 +221,6 @@ int8_t STORAGE_IsReady_FS(uint8_t lun)
 {
   /* USER CODE BEGIN 4 */
   UNUSED(lun);
-
-  printf("STORAGE_IsReady_FS called\r\n");
 
   return spif.inited ? (USBD_OK) : (USBD_FAIL);
   /* USER CODE END 4 */
