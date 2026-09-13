@@ -12,6 +12,8 @@
 
 /*----------------------------------------------- PRIVATE MACROS / DEFINES --------------------------------------------*/
 
+#define SPIF_BSRR_RESET_OFFSET   16U
+
 /*--------------------------------------------- PRIVATE VARIABLES (STATIC) --------------------------------------------*/
 
 /*------------------------------------------- PUBLIC FUNCTION IMPLEMENTATIONS -----------------------------------------*/
@@ -20,7 +22,7 @@ void spif_commander_cs(spif_handle_t *handle, bool select)
 {
     if(select == true)
     {
-      handle->gpio->BSRR = (uint32_t)(handle->pin) << 16;
+      handle->gpio->BSRR = (uint32_t)(handle->pin) << SPIF_BSRR_RESET_OFFSET;
     }
     else
     {
@@ -33,6 +35,10 @@ bool spif_commander_transmit(spif_handle_t *handle, const uint8_t *tx, uint32_t 
 	if(handle == NULL || tx == NULL)
 	{
 	  return false;
+	}
+	else if(size > UINT16_MAX)
+	{
+		return false;
 	}
     HAL_StatusTypeDef status = HAL_SPI_Transmit(handle->hspi, (uint8_t *)tx, (uint16_t)size, timeout);
     return (status == HAL_OK);
