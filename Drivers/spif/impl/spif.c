@@ -26,9 +26,9 @@
 
 bool spif_init(spif_handle_t *handle, SPI_HandleTypeDef *hspi, GPIO_TypeDef *gpio, uint16_t pin)
 {
-	uint8_t JEDEC[SPIF_JEDEC_ID_SIZE];
+	uint8_t JEDEC[SPIF_JEDEC_ID_SIZE] = {0};
 	uint8_t cmd_byte = (uint8_t)SPIF_CMD_JEDEC_ID;
-	bool ret_val;
+	bool ret_val = false;
 
 	if(handle == NULL || hspi == NULL || gpio == NULL)
 	{
@@ -52,29 +52,28 @@ bool spif_init(spif_handle_t *handle, SPI_HandleTypeDef *hspi, GPIO_TypeDef *gpi
 	  {
 		return false;
 	  }
-	  else
+
+	  handle->manufactor = (JEDEC[0] == SPIF_MANUFACTOR_WINBOND) ? SPIF_MANUFACTOR_WINBOND : SPIF_MANUFACTOR_ERROR;
+
+	  if (handle->manufactor == SPIF_MANUFACTOR_ERROR)
 	  {
-	    handle->manufactor = (JEDEC[0] == SPIF_MANUFACTOR_WINBOND) ? SPIF_MANUFACTOR_WINBOND : SPIF_MANUFACTOR_ERROR;
-
-	    if (handle->manufactor == SPIF_MANUFACTOR_ERROR)
-	    {
-	      return false;
-	    }
-
-	    handle->mem_type = JEDEC[1];
-	    handle->capacity = JEDEC[2];
-
-	    if(!spif_utils_capacity_to_block_count(handle->capacity, &handle->block_cnt))
-		{
-		  return false;
-		}
-
-	    handle->total_size = handle->block_cnt * SPIF_BLOCK_SIZE;
-	    handle->sector_cnt = handle->total_size / SPIF_SECTOR_SIZE;
-	    handle->page_cnt = handle->total_size / SPIF_PAGE_SIZE;
-
-	    handle->inited = true;
+	    return false;
 	  }
+
+	  handle->mem_type = JEDEC[1];
+	  handle->capacity = JEDEC[2];
+
+	  if(!spif_utils_capacity_to_block_count(handle->capacity, &handle->block_cnt))
+	  {
+	    return false;
+	  }
+
+	  handle->total_size = handle->block_cnt * SPIF_BLOCK_SIZE;
+	  handle->sector_cnt = handle->total_size / SPIF_SECTOR_SIZE;
+	  handle->page_cnt = handle->total_size / SPIF_PAGE_SIZE;
+
+	  handle->inited = true;
+
 	}
 	return true;
 }
@@ -135,7 +134,7 @@ bool spif_erase_sector(spif_handle_t *handle, uint32_t sector)
 
 bool spif_erase_block(spif_handle_t *handle, uint32_t block)
 {
-	bool ret_val;
+	bool ret_val = false;
 	uint32_t address = block * SPIF_BLOCK_SIZE;
 
 	if(!spif_utils_is_ready(handle))
