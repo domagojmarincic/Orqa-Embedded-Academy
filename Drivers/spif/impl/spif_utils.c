@@ -12,6 +12,9 @@
 
 /*----------------------------------------------- PRIVATE MACROS / DEFINES --------------------------------------------*/
 
+#define SPIF_CAPACITY_CODE_MIN   0x11U
+#define SPIF_CAPACITY_CODE_MAX   0x1AU
+
 /*--------------------------------------------- PRIVATE VARIABLES (STATIC) --------------------------------------------*/
 
 /*------------------------------------------- PUBLIC FUNCTION IMPLEMENTATIONS -----------------------------------------*/
@@ -69,7 +72,7 @@ bool spif_utils_capacity_to_block_count(uint8_t capacity, uint32_t *block_count)
 	{
 	  return false;
 	}
-	if((capacity >= 0x11) && (capacity <= 0x1A))
+	if((capacity >= SPIF_CAPACITY_CODE_MIN) && (capacity <= SPIF_CAPACITY_CODE_MAX))
 	{
 	  *block_count = (1u << (capacity - 0x10));
 	  return true;
