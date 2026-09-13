@@ -263,7 +263,10 @@ int8_t STORAGE_Read_FS(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t bl
   uint32_t address = (uint32_t)blk_addr * STORAGE_BLK_SIZ;
   uint32_t size     = (uint32_t)blk_len * STORAGE_BLK_SIZ;
 
-  if(!spif_read_address(&spif, address, buf, size));
+  if(!spif_read_address(&spif, address, buf, size))
+  {
+    return (USBD_FAIL);
+  }
 
   return (USBD_OK);
   /* USER CODE END 6 */
