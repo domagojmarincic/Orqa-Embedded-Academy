@@ -114,10 +114,10 @@ static void USBH_UserProcess  (USBH_HandleTypeDef *phost, uint8_t id)
 
   case HOST_USER_CLASS_ACTIVE:
     Appli_state = APPLICATION_READY;
-    {
+    /*{
 	  uint8_t msg[] = "Hello from CDC Host\r\n";
 	  USBH_CDC_Transmit(phost, msg, sizeof(msg) - 1);
-    }
+    }*/
   break;
 
   case HOST_USER_CONNECTION:
