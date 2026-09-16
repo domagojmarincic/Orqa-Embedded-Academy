@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "app_fatfs.h"
 #include "spi.h"
 #include "usart.h"
 #include "usb_device.h"
@@ -33,6 +34,8 @@
 #include "usbd_core.h"
 #include "usb_host.h"
 #include "usbh_cdc.h"
+
+#include "app_fatfs.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,21 +53,27 @@
 extern USBH_HandleTypeDef hUsbHostFS;
 extern USBD_HandleTypeDef hUsbDeviceFS;
 volatile uint8_t current_mode = 1;
+
+extern HCD_HandleTypeDef hhcd_USB_DRD_FS;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
 spif_handle_t spif;
+
+static uint8_t cdc_sent = 0;
+static uint32_t cdc_ready_tick = 0;
+extern ApplicationTypeDef Appli_state;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-void MX_USB_HOST_Process(void);
 /* USER CODE BEGIN PFP */
 int _write(int file, char *ptr, int len);
 void switch_to_device(void);
 void switch_to_host(void);
+void MX_USB_HOST_Process(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -77,6 +86,7 @@ void switch_to_device(void)
   }
 
   USBH_DeInit(&hUsbHostFS);
+  HAL_HCD_DeInit(&hhcd_USB_DRD_FS);
   HAL_GPIO_WritePin(VBUS_EN_GPIO_Port, VBUS_EN_Pin, GPIO_PIN_RESET);
 
   current_mode = 1;
@@ -134,6 +144,9 @@ int main(void)
   MX_SPI2_Init();
   MX_USART2_UART_Init();
   MX_USB_Device_Init();
+  if (MX_FATFS_Init() != APP_OK) {
+    Error_Handler();
+  }
   /* USER CODE BEGIN 2 */
   /* printf() goes out over USART2 -> ST-Link Virtual COM Port, see _write() below */
 
@@ -146,10 +159,52 @@ int main(void)
       Error_Handler();
   }
 
+  FRESULT fres = f_mount(&USERFatFs, USERPath, 1);
+  if (fres != FR_OK)
+  {
+      printf("f_mount failed: %d\r\n", fres);
+  }
+  else
+  {
+      printf("f_mount OK!\r\n");
+
+      FATFS *pfs;
+      DWORD free_clusters;
+      if (f_getfree(USERPath, &free_clusters, &pfs) == FR_OK)
+      {
+          uint32_t total_sectors = (pfs->n_fatent - 2) * pfs->csize;
+          uint32_t free_sectors = free_clusters * pfs->csize;
+          printf("Total: %lu KB, Free: %lu KB\r\n",
+                 (unsigned long)(total_sectors / 2), (unsigned long)(free_sectors / 2));
+      }
+
+      FIL testFile;
+      FRESULT fres_open = f_open(&testFile, "test.txt", FA_READ);
+      if (fres_open != FR_OK)
+      {
+          printf("f_open failed: %d\r\n", fres_open);
+      }
+      else
+      {
+          char buffer[128];
+          UINT bytesRead;
+          FRESULT fres_read = f_read(&testFile, buffer, sizeof(buffer) - 1, &bytesRead);
+          if (fres_read == FR_OK)
+          {
+              buffer[bytesRead] = '\0';
+              printf("Procitano %u bajtova: %s\r\n", bytesRead, buffer);
+          }
+          else
+          {
+              printf("f_read failed: %d\r\n", fres_read);
+          }
+          f_close(&testFile);
+      }
+  }
+
   HAL_GPIO_WritePin(VBUS_EN_GPIO_Port, VBUS_EN_Pin, GPIO_PIN_RESET);
   current_mode = 1;
   HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_SET);
-  MX_USB_Device_Init();
 
   /* USER CODE END 2 */
 
@@ -157,10 +212,6 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  /*
-    HAL_GPIO_TogglePin(test_led_GPIO_Port, test_led_Pin);
-	HAL_Delay(500);
-*/
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -178,7 +229,26 @@ int main(void)
 
 	  if (current_mode == 2)
 	  {
-	    MX_USB_HOST_Process();
+		  MX_USB_HOST_Process();
+
+		  if (Appli_state == APPLICATION_READY && !cdc_sent)
+		  {
+			  if (cdc_ready_tick == 0)
+			  {
+				  cdc_ready_tick = HAL_GetTick();
+			  }
+			  else if (HAL_GetTick() - cdc_ready_tick >= 500)
+			  {
+				  uint8_t msg[] = "Hello from CDC Host\r\n";
+				  USBH_CDC_Transmit(&hUsbHostFS, msg, sizeof(msg) - 1);
+				  cdc_sent = 1;
+			  }
+		  }
+	  }
+	  if (Appli_state != APPLICATION_READY)
+	  {
+	    cdc_sent = 0;
+	    cdc_ready_tick = 0;
 	  }
   }
   /* USER CODE END 3 */
