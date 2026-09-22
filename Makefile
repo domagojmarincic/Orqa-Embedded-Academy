@@ -94,7 +94,11 @@ FATFS/App/app_fatfs.c \
 Middlewares/Third_Party/FatFs/src/diskio.c \
 Middlewares/Third_Party/FatFs/src/ff.c \
 Middlewares/Third_Party/FatFs/src/ff_gen_drv.c \
-Middlewares/Third_Party/FatFs/src/option/syscall.c
+Middlewares/Third_Party/FatFs/src/option/unicode.c \
+Middlewares/Third_Party/FatFs/src/option/syscall.c \
+App/Transfer/Src/protocol_host.c \
+App/Src/app.c \
+App/Role/Src/mode_switch.c
 # ASM sources
 # ASM sources# ASM sources# ASM sources# ASM sources
 ASM_SOURCES =  \
@@ -169,8 +173,10 @@ C_INCLUDES =  \
 -IMiddlewares/ST/STM32_USB_Device_Library/Class/MSC/Inc \
 -IFATFS/Target \
 -IFATFS/App \
--IMiddlewares/Third_Party/FatFs/src
-
+-IMiddlewares/Third_Party/FatFs/src \
+-IApp/Transfer/Inc \
+-IApp/Inc \
+-IApp/Role/Inc
 
 
 # compile gcc flags
