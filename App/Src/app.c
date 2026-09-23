@@ -45,7 +45,7 @@ void App_Init(void)
     }
 
     HAL_GPIO_WritePin(VBUS_EN_GPIO_Port, VBUS_EN_Pin, GPIO_PIN_RESET);
-    current_mode = 1;
+    current_mode = DEVICE_MODE;
     HAL_GPIO_WritePin(LED_1_GPIO_Port, LED_1_Pin, GPIO_PIN_SET);
 }
 
