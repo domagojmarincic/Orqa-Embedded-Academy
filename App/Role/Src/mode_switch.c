@@ -9,7 +9,7 @@ extern USBH_HandleTypeDef hUsbHostFS;
 extern USBD_HandleTypeDef hUsbDeviceFS;
 extern HCD_HandleTypeDef hhcd_USB_DRD_FS;
 
-volatile uint8_t current_mode = DEVICE_MODE;
+uint8_t current_mode = DEVICE_MODE;
 
 void switch_to_device(void)
 {
