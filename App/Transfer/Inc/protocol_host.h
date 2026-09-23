@@ -12,6 +12,8 @@
 #define HOST_CMD_NACK                 0x06U
 
 #define HOST_PACKET_SIZE   256U
+#define CMD_SIZE	       1U
+#define CRC_SIZE		   2U
 
 void ProtocolHost_Init(void);
 void ProtocolHost_StartTransfer(void);
