@@ -29,20 +29,6 @@ void App_Init(void)
     {
         printf("f_mount failed: %d\r\n", fres);
     }
-    else
-    {
-        printf("f_mount OK!\r\n");
-
-        FATFS *pfs;
-        DWORD free_clusters;
-        if (f_getfree(USERPath, &free_clusters, &pfs) == FR_OK)
-        {
-            uint32_t total_sectors = (pfs->n_fatent - 2) * pfs->csize;
-            uint32_t free_sectors = free_clusters * pfs->csize;
-            printf("Total: %lu KB, Free: %lu KB\r\n",
-                   (unsigned long)(total_sectors / 2), (unsigned long)(free_sectors / 2));
-        }
-    }
 
     HAL_GPIO_WritePin(VBUS_EN_GPIO_Port, VBUS_EN_Pin, GPIO_PIN_RESET);
     current_mode = DEVICE_MODE;
