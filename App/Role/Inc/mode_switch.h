@@ -6,7 +6,7 @@
 #define DEVICE_MODE   1U
 #define HOST_MODE     2U
 
-extern volatile uint8_t current_mode;
+extern uint8_t current_mode;
 
 void switch_to_device(void);
 void switch_to_host(void);
