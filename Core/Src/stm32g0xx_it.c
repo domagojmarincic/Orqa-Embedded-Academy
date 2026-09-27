@@ -23,13 +23,13 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32g0xx_hal_hcd.h"
+#include "mode_switch.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
 extern PCD_HandleTypeDef hpcd_USB_DRD_FS;
 extern HCD_HandleTypeDef hhcd_USB_DRD_FS;
-extern volatile uint8_t current_mode;
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -59,6 +59,8 @@ extern volatile uint8_t current_mode;
 
 /* External variables --------------------------------------------------------*/
 extern PCD_HandleTypeDef hpcd_USB_DRD_FS;
+extern TIM_HandleTypeDef htim6;
+
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -87,53 +89,12 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
     /* USER CODE BEGIN W1_HardFault_IRQn 0 */
     /* USER CODE END W1_HardFault_IRQn 0 */
   }
-}
-
-/**
-  * @brief This function handles System service call via SWI instruction.
-  */
-void SVC_Handler(void)
-{
-  /* USER CODE BEGIN SVC_IRQn 0 */
-
-  /* USER CODE END SVC_IRQn 0 */
-  /* USER CODE BEGIN SVC_IRQn 1 */
-
-  /* USER CODE END SVC_IRQn 1 */
-}
-
-/**
-  * @brief This function handles Pendable request for system service.
-  */
-void PendSV_Handler(void)
-{
-  /* USER CODE BEGIN PendSV_IRQn 0 */
-
-  /* USER CODE END PendSV_IRQn 0 */
-  /* USER CODE BEGIN PendSV_IRQn 1 */
-
-  /* USER CODE END PendSV_IRQn 1 */
-}
-
-/**
-  * @brief This function handles System tick timer.
-  */
-void SysTick_Handler(void)
-{
-  /* USER CODE BEGIN SysTick_IRQn 0 */
-
-  /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
-  /* USER CODE BEGIN SysTick_IRQn 1 */
-
-  /* USER CODE END SysTick_IRQn 1 */
 }
 
 /******************************************************************************/
@@ -151,17 +112,30 @@ void USB_UCPD1_2_IRQHandler(void)
   /* USER CODE BEGIN USB_UCPD1_2_IRQn 0 */
 
   /* USER CODE END USB_UCPD1_2_IRQn 0 */
-	if (current_mode == 2)
-	{
-	  HAL_HCD_IRQHandler(&hhcd_USB_DRD_FS);
-	}
-	else if (current_mode == 1)
-	{
-	  HAL_PCD_IRQHandler(&hpcd_USB_DRD_FS);
-	}
-  /* USER CODE BEGIN USB_UCPD1_2_IRQn 1 */
+  if (current_mode == HOST_MODE)
+  {
+	HAL_HCD_IRQHandler(&hhcd_USB_DRD_FS);
+  }
+  else
+  {
+	HAL_PCD_IRQHandler(&hpcd_USB_DRD_FS);
+  }  /* USER CODE BEGIN USB_UCPD1_2_IRQn 1 */
 
   /* USER CODE END USB_UCPD1_2_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM6, DAC and LPTIM1 global Interrupts.
+  */
+void TIM6_DAC_LPTIM1_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM6_DAC_LPTIM1_IRQn 0 */
+
+  /* USER CODE END TIM6_DAC_LPTIM1_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim6);
+  /* USER CODE BEGIN TIM6_DAC_LPTIM1_IRQn 1 */
+
+  /* USER CODE END TIM6_DAC_LPTIM1_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
