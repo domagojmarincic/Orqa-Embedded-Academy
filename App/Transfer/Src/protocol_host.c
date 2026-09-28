@@ -71,8 +71,14 @@ static bool SendAndWaitAck(uint8_t *data, uint32_t len)
 
 bool ProtocolHost_StartTransfer(void)
 {
-	FRESULT res = f_open(&file, FIRMWARE_FILENAME, FA_READ);
+	FRESULT mres = f_mount(&USERFatFs, USERPath, 1);
+	if (mres != FR_OK)
+	{
+	    printf("f_mount GRESKA: %d\r\n", mres);
+	    return false;
+	}
 
+	FRESULT res = f_open(&file, FIRMWARE_FILENAME, FA_READ);
 	if (res != FR_OK)
 	{
 		printf("f_open GRESKA: %d\r\n", res);
