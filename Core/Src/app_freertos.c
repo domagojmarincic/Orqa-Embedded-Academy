@@ -63,6 +63,8 @@ const osThreadAttr_t defaultTask_attributes = {
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
 
+void vButtonTask(void *argument);
+
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -105,6 +107,11 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
+  static const osThreadAttr_t button_attr = {
+      .name = "buttons",
+      .stack_size = 512 * 4
+  };
+  osThreadNew(vButtonTask, NULL, &button_attr);
   /* USER CODE END RTOS_EVENTS */
 
 }
@@ -124,7 +131,6 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-    App_CheckButtons();
     App_Task();
     osDelay(1);
   }
@@ -137,6 +143,15 @@ void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
 {
     printf("STACK OVERFLOW U TASKU: %s\r\n", pcTaskName);
     while(1) {}
+}
+
+void vButtonTask(void *argument)
+{
+    for(;;)
+    {
+        osDelay(50);
+        App_CheckButtons();
+    }
 }
 /* USER CODE END Application */
 

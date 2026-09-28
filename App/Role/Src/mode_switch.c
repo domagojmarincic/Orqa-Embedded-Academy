@@ -18,6 +18,7 @@ void switch_to_device(void)
         return;
     }
 
+    Appli_state = APPLICATION_IDLE;
     USBH_DeInit(&hUsbHostFS);
     HAL_HCD_DeInit(&hhcd_USB_DRD_FS);
     HAL_GPIO_WritePin(VBUS_EN_GPIO_Port, VBUS_EN_Pin, GPIO_PIN_RESET);

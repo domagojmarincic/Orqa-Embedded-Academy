@@ -6,10 +6,20 @@
 #include "spif.h"
 #include "spi.h"
 #include "usb_host.h"
+#include "cmsis_os.h"
 #include <stdio.h>
 
 spif_handle_t spif;
 static uint8_t transfer_started = 0;
+
+static const osThreadAttr_t reader_attr = {
+    .name = "reader",
+    .stack_size = 1024 * 4
+};
+static const osThreadAttr_t sender_attr = {
+    .name = "sender",
+    .stack_size = 512 * 4
+};
 
 extern ApplicationTypeDef Appli_state;
 
@@ -75,13 +85,13 @@ void App_Task(void)
         }
         else if (HAL_GetTick() - ready_tick >= 500)
         {
-            ProtocolHost_Init();
-            ProtocolHost_StartTransfer();
+            ProtocolHost_RTOS_Init();
+            if (ProtocolHost_StartTransfer())
+            {
+                osThreadNew(vReaderTask, NULL, &reader_attr);
+                osThreadNew(vSenderTask, NULL, &sender_attr);
+            }
             transfer_started = 1;
         }
-    }
-    else
-    {
-        ProtocolHost_Process();
     }
 }
