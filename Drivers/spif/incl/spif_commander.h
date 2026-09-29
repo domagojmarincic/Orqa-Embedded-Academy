@@ -28,7 +28,10 @@ extern "C" {
 #define SPIF_TIMEOUT_PAGE_PROG          100  /* ms, page program            */
 #define SPIF_TIMEOUT_SECTOR_ERASE       1000 /* ms                          */
 #define SPIF_TIMEOUT_BLOCK_ERASE        3000 /* ms                          */
+#define SPIF_TIMEOUT_CHIP_ERASE         1000000UL
 
+/*  highest byte address reachable with a 3-byte address (16 MB - 1) */
+#define SPIF_MAX_3ADDR_ADDRESS 0xFFFFFFUL
 /* Length of the JEDEC ID answer: manufacturer, memory type, capacity */
 #define SPIF_JEDEC_ID_SIZE              3
 

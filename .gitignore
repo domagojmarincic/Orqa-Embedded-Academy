@@ -1,0 +1,11 @@
+# Build output
+build/
+Debug/
+Release/
+
+# STM32CubeIDE / Eclipse metadata (workspace-specific, not part of source)
+.metadata/
+
+# OS-specific
+.DS_Store
+Thumbs.db
