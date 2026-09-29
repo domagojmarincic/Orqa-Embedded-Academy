@@ -1,10 +1,10 @@
+#include <string.h>
+#include <stdio.h>
 #include "protocol_host.h"
 #include "usbh_cdc.h"
 #include "usb_host.h"
 #include "app_fatfs.h"
 #include "cmsis_os.h"
-#include <string.h>
-#include <stdio.h>
 
 extern USBH_HandleTypeDef hUsbHostFS;
 extern ApplicationTypeDef Appli_state;
@@ -12,9 +12,8 @@ extern ApplicationTypeDef Appli_state;
 #define FIRMWARE_FILENAME   "snake_academy.bin"
 
 static FIL file;
-static uint8_t buffer[1 + HOST_PACKET_SIZE + 2];
-static uint32_t buffer_len;
-static volatile bool file_finished;
+static uint8_t buffer[2][1 + HOST_PACKET_SIZE + 2];
+static uint32_t buffer_len[2];
 static volatile bool transfer_abort = false;
 
 static uint8_t rx_buf[4];
@@ -29,8 +28,11 @@ static bool SendAndWaitAck(uint8_t *data, uint32_t len);
 
 void ProtocolHost_RTOS_Init(void)
 {
-    xDataReadySem = osSemaphoreNew(1, 0, NULL);
-    xBufferFreeSem = osSemaphoreNew(1, 0, NULL);
+	if (xDataReadySem)  osSemaphoreDelete(xDataReadySem);
+	if (xBufferFreeSem) osSemaphoreDelete(xBufferFreeSem);
+
+    xDataReadySem = osSemaphoreNew(2, 0, NULL);
+    xBufferFreeSem = osSemaphoreNew(2, 0, NULL);
 }
 
 void USBH_CDC_ReceiveCallback(USBH_HandleTypeDef *phost)
@@ -74,23 +76,24 @@ bool ProtocolHost_StartTransfer(void)
 	FRESULT mres = f_mount(&USERFatFs, USERPath, 1);
 	if (mres != FR_OK)
 	{
-	    printf("f_mount GRESKA: %d\r\n", mres);
+	    printf("f_mount error: %d\r\n", mres);
 	    return false;
 	}
 
 	FRESULT res = f_open(&file, FIRMWARE_FILENAME, FA_READ);
 	if (res != FR_OK)
 	{
-		printf("f_open GRESKA: %d\r\n", res);
+		printf("f_open error: %d\r\n", res);
 		return false;
 	}
-	file_finished = false;
 	transfer_abort = false;
 	return true;
 }
 
 void vReaderTask(void *pv)
 {
+	uint8_t idx = 0;
+
     for(;;)
     {
         osSemaphoreAcquire(xBufferFreeSem, osWaitForever);
@@ -101,37 +104,43 @@ void vReaderTask(void *pv)
         }
 
         UINT bytes_read = 0;
-        f_read(&file, &buffer[1], HOST_PACKET_SIZE, &bytes_read);
+        FRESULT res = f_read(&file, &buffer[idx][1], HOST_PACKET_SIZE, &bytes_read);
 
+        if (res != FR_OK)
+        {
+		  printf("f_read GRESKA: %d\r\n", res);
+		  transfer_abort = true;
+		  f_close(&file);
+		  osSemaphoreRelease(xDataReadySem);
+		  vTaskDelete(NULL);
+        }
         if (bytes_read == 0)
-        {
-            file_finished = true;
-            f_close(&file);
-        }
-        else
-        {
-            if (bytes_read < HOST_PACKET_SIZE)
-            {
-                memset(&buffer[1 + bytes_read], 0xFF, HOST_PACKET_SIZE - bytes_read);
-            }
-            uint16_t crc = CalculateChecksum(&buffer[1], HOST_PACKET_SIZE);
-            buffer[1 + HOST_PACKET_SIZE] = (uint8_t)(crc & 0xFF);
-            buffer[1 + HOST_PACKET_SIZE + 1] = (uint8_t)(crc >> 8);
-            buffer[0] = HOST_CMD_DATA_BLOCK_WITH_CRC;
-            buffer_len = 1 + HOST_PACKET_SIZE + 2;
-        }
+		{
+		  buffer_len[idx] = 0;
+		  f_close(&file);
+		  osSemaphoreRelease(xDataReadySem);
+		  vTaskDelete(NULL);
+		}
+
+		if (bytes_read < HOST_PACKET_SIZE)
+		{
+	   	  memset(&buffer[idx][1 + bytes_read], 0xFF, HOST_PACKET_SIZE - bytes_read);
+		}
+		uint16_t crc = CalculateChecksum(&buffer[idx][1], HOST_PACKET_SIZE);
+		buffer[idx][1 + HOST_PACKET_SIZE] = (uint8_t)(crc & 0xFF);
+		buffer[idx][1 + HOST_PACKET_SIZE + 1] = (uint8_t)(crc >> 8);
+		buffer[idx][0] = HOST_CMD_DATA_BLOCK_WITH_CRC;
+		buffer_len[idx] = 1 + HOST_PACKET_SIZE + 2;
 
         osSemaphoreRelease(xDataReadySem);
-
-        if (file_finished)
-        {
-            vTaskDelete(NULL);
-        }
+        idx ^= 1;
     }
 }
 
 void vSenderTask(void *pv)
 {
+    uint8_t idx = 0;
+
     cmd_buf[0] = HOST_CMD_SET_PACKET_SIZE;
     bool ok = SendAndWaitAck(cmd_buf, 1);
     if (ok)
@@ -141,33 +150,39 @@ void vSenderTask(void *pv)
     }
     if (!ok)
     {
-        printf("Handshake neuspjesan\r\n");
-        f_close(&file);
+        printf("Handshake unsuccessfull\r\n");
+        transfer_abort = true;
+        osSemaphoreRelease(xBufferFreeSem);
         vTaskDelete(NULL);
     }
-
+    osSemaphoreRelease(xBufferFreeSem);
     osSemaphoreRelease(xBufferFreeSem);
 
     for(;;)
     {
         osSemaphoreAcquire(xDataReadySem, osWaitForever);
 
-        if (file_finished)
+        if (transfer_abort)
+		{
+        	vTaskDelete(NULL);
+		}
+        if (buffer_len[idx] == 0)
         {
             cmd_buf[0] = HOST_CMD_END_TRANSFER;
             USBH_CDC_Transmit(&hUsbHostFS, cmd_buf, 1);
-            printf("END_TRANSFER poslan\r\n");
+            printf("END_TRANSFER sent\r\n");
             vTaskDelete(NULL);
         }
 
-        if (!SendAndWaitAck(buffer, buffer_len))
+        if (!SendAndWaitAck(buffer[idx], buffer_len[idx]))
         {
-            printf("Transfer prekinut: nema ACK-a\r\n");
+            printf("Transfer aborted: no ACK\r\n");
             transfer_abort = true;
             osSemaphoreRelease(xBufferFreeSem);
             vTaskDelete(NULL);
         }
         osSemaphoreRelease(xBufferFreeSem);
+        idx ^= 1;
     }
 }
 

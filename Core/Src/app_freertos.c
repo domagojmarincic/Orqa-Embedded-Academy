@@ -141,7 +141,7 @@ void StartDefaultTask(void *argument)
 /* USER CODE BEGIN Application */
 void vApplicationStackOverflowHook(TaskHandle_t xTask, char *pcTaskName)
 {
-    printf("STACK OVERFLOW U TASKU: %s\r\n", pcTaskName);
+    printf("STACK OVERFLOW%s\r\n", pcTaskName);
     while(1) {}
 }
 

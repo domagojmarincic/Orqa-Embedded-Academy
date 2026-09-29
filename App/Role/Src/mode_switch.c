@@ -8,6 +8,7 @@
 extern USBH_HandleTypeDef hUsbHostFS;
 extern USBD_HandleTypeDef hUsbDeviceFS;
 extern HCD_HandleTypeDef hhcd_USB_DRD_FS;
+extern ApplicationTypeDef Appli_state;
 
 volatile uint8_t current_mode = DEVICE_MODE;
 
